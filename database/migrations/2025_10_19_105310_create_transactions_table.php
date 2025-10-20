@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('member_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('alias');
+            $table->text('description')->nullable();
+            $table->text('notes')->nullable();
             $table->date('date');
             $table->decimal('amount', 15, 2);
             $table->timestamps();

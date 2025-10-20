@@ -21,6 +21,8 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('member','member.member-list')->name('member');
     Volt::route('member/create','member.member-create')->name('member.create');
     Volt::route('member/{memberId}/edit','member.member-edit')->name('member.edit');
+
+    Volt::route('transaction','transaction.transaction-list')->name('transaction');
 });
 
 require __DIR__.'/auth.php';

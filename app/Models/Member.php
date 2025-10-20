@@ -35,4 +35,9 @@ class Member extends Model
     {
         return $this->genderOptions()[$this->gender];
     }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class);
+    }
 }
