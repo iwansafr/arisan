@@ -22,6 +22,8 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('member/create','member.member-create')->name('member.create');
     Volt::route('member/{memberId}/edit','member.member-edit')->name('member.edit');
 
+    Volt::route('period','period.period-list')->name('period');
+
     Volt::route('transaction','transaction.transaction-list')->name('transaction');
 });
 

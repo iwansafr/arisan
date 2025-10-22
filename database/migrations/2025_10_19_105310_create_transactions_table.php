@@ -11,8 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('periods', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('period_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('member_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('alias');
             $table->text('description')->nullable();
@@ -28,6 +36,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('periods');
         Schema::dropIfExists('transactions');
     }
 };

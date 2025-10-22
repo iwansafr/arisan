@@ -7,7 +7,8 @@ use Livewire\Attributes\Computed;
 new class extends Component {
     
     public $date;
-    public $member_id;
+    public $member_id = null;
+    public $period_id;
 
     public function mount()
     {
@@ -18,7 +19,17 @@ new class extends Component {
     #[Computed]
     public function members()
     {
-        return \App\Models\Member::doesntHave('transaction')->get();
+        return \App\Models\Member::hwereDoesntHave('transaction',function(Builder $query){
+            $query->whereDate('period_id', $this->period_id);
+        })->get();
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'date' => 'required|date',
+            'member_id' => 'required',
+        ]);
     }
 }; ?>
 
@@ -31,11 +42,15 @@ new class extends Component {
         <form wire:submit="save">
             <div class="space-y-6">
                 <div>
-                    <flux:heading size="lg">Update profile</flux:heading>
-                    <flux:text class="mt-2">Make changes to your personal details.</flux:text>
+                    <flux:heading size="lg">Add Transaction</flux:heading>
+                    <flux:text class="mt-2">dapat arisan.</flux:text>
                 </div>
-    
-                <flux:select wire:model="member_id" label="Member">
+                <x-action-message class="me-3 text-green-500" on="create-member">
+                    {{ __('Berhasil menambah data transaksi.') }}
+                </x-action-message>
+
+                <flux:select wire:model="member_id" label="Member" placeholder="Anggota Belum Dapat Arisan">
+                    <flux:select.option value="">{{ __('Select Member') }}</flux:select.option>
                     @foreach ($this->members as $member)
                         <flux:select.option value="{{ $member->id }}"> {{ $member->name }} </flux:select.option>
                     @endforeach
@@ -46,7 +61,7 @@ new class extends Component {
                 <div class="flex">
                     <flux:spacer />
     
-                    <flux:button type="submit" variant="primary">Save changes</flux:button>
+                    <flux:button type="submit" variant="primary">Add Transaction</flux:button>
                 </div>
             </div>
         </form>
