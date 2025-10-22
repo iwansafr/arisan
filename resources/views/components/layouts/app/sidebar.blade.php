@@ -17,6 +17,7 @@
                     <flux:navlist.item icon="user" :href="route('member')" :current="request()->routeIs('member')" wire:navigate>{{ __('Member') }}</flux:navlist.item>
                     <flux:navlist.item icon="calendar" :href="route('period')" :current="request()->routeIs('period')" wire:navigate>{{ __('Periode') }}</flux:navlist.item>
                     <flux:navlist.item icon="banknotes" :href="route('transaction')" :current="request()->routeIs('transaction')" wire:navigate>{{ __('Transaksi') }}</flux:navlist.item>
+                    <flux:navlist.item icon="cog" :href="route('config.period')" :current="request()->routeIs('config.period')" wire:navigate>{{ __('Config Period') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
