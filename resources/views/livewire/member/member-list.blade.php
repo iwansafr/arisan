@@ -48,6 +48,7 @@ new class extends Component {
 }; ?>
 
 <div>
+    <flux:button icon="folder-arrow-down" wire:naviget href="{{ route('member.import') }}"></flux:button>
     <flux:button icon="plus" wire:navigate href="{{ route('member.create') }}"></flux:button>
     <div class="flex items-start max-md:flex-col">
         <div class="mt-2">
