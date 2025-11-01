@@ -8,6 +8,7 @@ new class extends Component {
     
     public $config;
     public $value;
+    public $title;
 
     public function mount()
     {
@@ -19,6 +20,7 @@ new class extends Component {
         } else {
             $period = json_decode($this->config->value);
             $this->value = $period->id;
+            $this->title = $period->title;
         }
     }
 
@@ -51,7 +53,7 @@ new class extends Component {
         <flux:separator class="md:hidden" />
         <div class="flex-1 self-stretch max-md:pt-6">
             <div class="w-full max-w-lg">
-                @if(!empty($config)) {{ $config->value }} @else Config Periode belum di atur @endif
+                @if(!empty($config)) Periode Aktif: {{ $title }} @else Config Periode belum di atur @endif
                 <form wire:submit="save" class="my-6 w-full space-y-6">
                     <x-action-message class="me-3 text-green-500" on="saved-config-period">
                         {{ __('Berhasil mengubah data anggota.') }}
