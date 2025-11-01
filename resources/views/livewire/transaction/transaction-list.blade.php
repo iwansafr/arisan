@@ -49,23 +49,29 @@ new class extends Component {
         $this->validate($validated);
 
         if (empty($this->transactionId)) {
-            $transaction = Transaction::create([
-                'period_id' => $this->period_id,
-                'member_id' => $this->member_id,
-                'alias' => $this->members->where('id', $this->member_id)->first()->name,
-                'date' => $this->date,
-                'amount' => 0,
-            ]);
-
-            $paymentMembers = \App\Models\Member::where('id', '!=', $this->member_id)->get();
-            foreach ($paymentMembers as $paymentMember) {
-                \App\Models\TransactionPayment::create([
-                    'transaction_id' => $transaction->id,
-                    'member_id' => $paymentMember->id,
-                    'alias' => $paymentMember->name,
-                    'date' => $this->date,
-                    'amount' => 0,
-                ]);
+            try {
+                DB::transaction(function () {
+                    $transaction = Transaction::create([
+                        'period_id' => $this->period_id,
+                        'member_id' => $this->member_id,
+                        'alias' => $this->members->where('id', $this->member_id)->first()->name,
+                        'date' => $this->date,
+                        'amount' => 0,
+                    ]);
+        
+                    $paymentMembers = \App\Models\Member::where('id', '!=', $this->member_id)->get();
+                    foreach ($paymentMembers as $paymentMember) {
+                        \App\Models\TransactionPayment::create([
+                            'transaction_id' => $transaction->id,
+                            'member_id' => $paymentMember->id,
+                            'alias' => $paymentMember->name,
+                            'date' => $this->date,
+                            'amount' => 0,
+                        ]);
+                    }
+                });
+            } catch (\Throwable $th) {
+                return $this->addError('transaction_error', 'Gagal menambah transaksi: ' . $th->getMessage());
             }
         }else{
             $transaction = Transaction::findOrFail($this->transactionId);
