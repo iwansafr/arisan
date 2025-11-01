@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('config/period','config.config-period')->name('config.period');
 
     Volt::route('transaction','transaction.transaction-list')->name('transaction');
+    Volt::route('transaction/payment/{transactionId}','transaction.transaction-payment')->name('transaction.payment');
 });
 
 require __DIR__.'/auth.php';

@@ -49,13 +49,24 @@ new class extends Component {
         $this->validate($validated);
 
         if (empty($this->transactionId)) {
-            Transaction::create([
+            $transaction = Transaction::create([
                 'period_id' => $this->period_id,
                 'member_id' => $this->member_id,
                 'alias' => $this->members->where('id', $this->member_id)->first()->name,
                 'date' => $this->date,
                 'amount' => 0,
             ]);
+
+            $paymentMembers = \App\Models\Member::where('id', '!=', $this->member_id)->get();
+            foreach ($paymentMembers as $paymentMember) {
+                \App\Models\TransactionPayment::create([
+                    'transaction_id' => $transaction->id,
+                    'member_id' => $paymentMember->id,
+                    'alias' => $paymentMember->name,
+                    'date' => $this->date,
+                    'amount' => 0,
+                ]);
+            }
         }else{
             $transaction = Transaction::findOrFail($this->transactionId);
             $transaction->date = $this->date;
@@ -149,7 +160,7 @@ new class extends Component {
                         </td>
                         <td class="px-6 py-4">
                             {{-- <flux:button icon="pencil" href="{{ route('transaction.edit',['memberId'=>$transaction->id]) }}" variant="primary" size="xs"></flux:button> --}}
-                            <flux:button icon="arrow-right-circle" href="" variant="primary" wire:navigate size="xs" class="me-2">Pembayaran</flux:button>
+                            <flux:button icon="arrow-right-circle" href="{{ route('transaction.payment',['transactionId'=>encrypt($transaction->id)]) }}" variant="primary" wire:navigate size="xs" class="me-2">Pembayaran</flux:button>
                             <flux:modal.trigger name="add-transaction">
                                 <flux:button icon="pencil" variant="primary" size="xs" class="me-2" wire:click="setTransaction({{ $transaction->id }})">
                                 </flux:button>
@@ -160,7 +171,7 @@ new class extends Component {
                 @empty
                     <tr>
                         <td colspan="5" class="px-6 py-4 text-center">
-                            Tidak ada data anggota.
+                            Tidak ada data transaksi.
                         </td>
                     </tr>
                 @endforelse

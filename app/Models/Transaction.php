@@ -19,4 +19,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Member::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(TransactionPayment::class);
+    }
 }
