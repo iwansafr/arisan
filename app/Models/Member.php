@@ -15,7 +15,7 @@ class Member extends Model
 
     public function generateOrder()
     {
-        $latestMember = Member::latest()->first();
+        $latestMember = Member::orderByDesc('order')->first();
         if (!empty($latestMember)) {
             return $latestMember->order + 1;
         }else{

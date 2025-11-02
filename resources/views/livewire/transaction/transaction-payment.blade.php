@@ -15,5 +15,11 @@ new class extends Component {
 }; ?>
 
 <div>
-    {{  dd($transaction) }}
+    @forelse ($transaction->payments as $payment)
+        <p>
+            {{ $payment->alias }}
+        </p>
+    @empty
+        
+    @endforelse
 </div>

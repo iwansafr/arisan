@@ -2,10 +2,11 @@
 
 use App\Models\Member;
 use Livewire\Volt\Component;
+use Livewire\WithPagination;
 use Livewire\Attributes\Computed;
 
 new class extends Component {
-
+    use WithPagination;
     public $search;
     
     #[Computed]
@@ -117,6 +118,11 @@ new class extends Component {
                         </td>
                     </tr>
                 @endforelse
+                <tr>
+                    <td colspan="6" class="px-6 py-4">
+                        {{ $this->members->links() }}
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

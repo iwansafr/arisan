@@ -5,7 +5,13 @@ use Livewire\Volt\Component;
 
 new class extends Component {
 
-    public $name, $phone, $gender = 1;
+    public $name, $phone, $gender = 1, $order;
+
+    public function mount()
+    {
+        $member = new Member();
+        $this->order = $member->generateOrder();
+    }
 
     public function createMember()
     {
@@ -42,6 +48,7 @@ new class extends Component {
                     </x-action-message>
                     <flux:input label="Nama" wire:model="name" placeholder="Nama Anggota"></flux:input>
                     <flux:input label="Phone" wire:model="phone" placeholder="Nomor Hp"></flux:input>
+                    <flux:input label="Nomor Urut" wire:model="order" placeholder="Nomor Urut" type="number"></flux:input>
                     <flux:select wire:model="gender" label="Gender">
                         <flux:select.option value="1">{{ __('Laki-laki') }}</flux:select.option>
                         <flux:select.option value="2">{{ __('Perempuan') }}</flux:select.option>
