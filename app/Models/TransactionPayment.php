@@ -13,4 +13,9 @@ class TransactionPayment extends Model
         'date',
         'amount',
     ];
+
+    public function member()
+    {
+        return $this->belongsTo(Member::class);
+    }
 }
